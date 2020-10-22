@@ -1,15 +1,28 @@
 import bodyParser from 'body-parser';
 import express from 'express';
+import { sequelize } from './database/config';
+
 import {Request, Response} from "express"
+
+import AddressesController from './controllers/AddressesController';
 import ProductsController from './controllers/ProductsController';
 import UsersController from './controllers/UsersController';
-import { sequelize } from './database/config';
+
+
 
 const app = express();
 
+
+
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
+
 app.post('/sync', startDb);
+
+// Rotas de Autenticação
+
+
 
 // Rotas de produtos
 app.get('/products/:id', ProductsController.get);
@@ -24,6 +37,12 @@ app.get('/users', UsersController.list);
 app.post('/users', UsersController.create);
 app.put('/users/:id', UsersController.update);
 app.delete('/users/:id', UsersController.delete);
+
+// Rotas de endereços
+app.post('/address', AddressesController.create);
+app.put('/addresses/:id', AddressesController.update);
+app.delete('/addresses/:id', AddressesController.delete);
+
 
 app.listen(5000);
 
