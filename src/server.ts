@@ -2,20 +2,28 @@ import bodyParser from 'body-parser';
 import express from 'express';
 import {Request, Response} from "express"
 import ProductsController from './controllers/ProductsController';
+import UsersController from './controllers/UsersController';
 import { sequelize } from './database/config';
 
 const app = express();
 
-app.listen(5001);
 app.use(bodyParser.json());
 
 app.post('/sync', startDb);
 
+// Rotas de produtos
 app.get('/products/:id', ProductsController.get);
 app.get('/products', ProductsController.list);
 app.post('/products', ProductsController.create);
 app.put('/products/:id', ProductsController.update);
 app.delete('/products/:id', ProductsController.delete);
+
+// Rotas de usuários
+app.get('/users/:id', UsersController.get);
+app.get('/users', UsersController.list);
+app.post('/users', UsersController.create);
+app.put('/users/:id', UsersController.update);
+app.delete('/users/:id', UsersController.delete);
 
 app.listen(5000);
 
