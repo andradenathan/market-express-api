@@ -15,6 +15,7 @@ app.post('/sync', startDb);
 app.get('/products/:id', ProductsController.get);
 app.get('/products', ProductsController.list);
 app.get('/products/:id/owner', ProductsController.getOwner);
+app.get('/products/:id/offers', ProductsController.getoffers);
 app.post('/products', ProductsController.create);
 app.post('/products/:product_id/owner/:user_id', ProductsController.setOwner);
 app.put('/products/:id', ProductsController.update);
@@ -24,11 +25,13 @@ app.delete('/products/:id', ProductsController.delete);
 app.get('/users/:id', UsersController.get);
 app.get('/users', UsersController.list);
 app.get('/users/:id/products', UsersController.getProducts);
+app.get('/users/:id/offers', UsersController.getOffers);
 app.post('/users', UsersController.create);
+app.post('/users/:user_id/offers/:product_id', UsersController.makeOffer);
 app.put('/users/:id', UsersController.update);
 app.delete('/users/:id', UsersController.delete);
 
-app.listen(5000);
+app.listen(5001);
 
 
 async function startDb(req: Request, res: Response) {

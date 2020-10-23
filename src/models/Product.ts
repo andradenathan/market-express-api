@@ -1,4 +1,5 @@
-import { AllowNull, BelongsTo, Column, DataType, Table, Model, ForeignKey } from 'sequelize-typescript';
+import { AllowNull, BelongsTo, Column, DataType, Table, Model, ForeignKey, BelongsToMany } from 'sequelize-typescript';
+import { Offer } from './Offer';
 import { User } from './User';
 
 @Table
@@ -16,6 +17,9 @@ export class Product extends Model {
     @Column({type: DataType.BIGINT})
     ownerId!: number;
 
-    @BelongsTo(() => User)
+    @BelongsTo(() => User, {onDelete: 'CASCADE'})
     owner!: User;
+
+    @BelongsToMany(() => User, () => Offer)
+    offers!: User[];
 }

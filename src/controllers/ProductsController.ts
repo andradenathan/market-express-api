@@ -2,6 +2,7 @@ import { Product } from "../models/Product"
 import {Request, Response} from "express"
 import { sequelize } from "../database/config";
 import { User } from "../models/User";
+import { Offer } from "../models/Offer";
 
 export default {
 
@@ -28,8 +29,6 @@ export default {
 
     },
 
-
-
     async getOwner(req: Request, res: Response) {
         try {
             const product = await Product.findByPk(req.params["id"]);
@@ -38,6 +37,21 @@ export default {
             const owner = await product.$get('owner');
 
             res.status(200).json({"owner": owner}).send();
+
+        } catch (err) {
+            res.status(404).json({"error": "Entity not found"}).send();
+        }
+
+    },
+
+    async getoffers(req: Request, res: Response) {
+        try {
+            const product = await Product.findByPk(req.params["id"]);
+            if (product === null) throw new Error;
+
+            const offers = await product.$get('offers');
+
+            res.status(200).json({"offers": offers}).send();
 
         } catch (err) {
             res.status(404).json({"error": "Entity not found"}).send();
