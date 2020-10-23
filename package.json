@@ -18,9 +18,14 @@
   },
   "homepage": "https://github.com/andradenathan/nodejs-market-express#readme",
   "dependencies": {
+    "@types/bluebird": "^3.5.32",
+    "@types/node": "^14.14.2",
+    "@types/validator": "^13.1.0",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "sequelize": "^6.3.5",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^5.22.3",
+    "sequelize-typescript": "^1.1.0",
     "sqlite3": "^5.0.0"
   },
   "devDependencies": {

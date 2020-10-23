@@ -1,23 +1,19 @@
-import { DataTypes, Model } from 'sequelize';
-import { sequelize } from '../database/config'
+import { Column, DataType, Table, Model, HasMany } from 'sequelize-typescript';
+import { Product } from './Product';
 
-export class User extends Model {}
+@Table
+export class User extends Model {
 
-User.init({
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false
-    }
+    @Column({type: DataType.STRING})
+    name!: string;
 
-}, {
-    sequelize,
-    modelName: 'User'
-});
+    @Column({type: DataType.STRING})
+    password!: string;
+
+    @Column({type: DataType.STRING})
+    email!: string;
+
+    @HasMany(() => Product)
+    products!: Product[];
+}
+

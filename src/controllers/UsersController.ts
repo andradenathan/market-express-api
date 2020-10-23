@@ -18,12 +18,27 @@ export default {
         try {
             const user = await User.findByPk(req.params["id"]);
             if (user === null) throw new Error;
-            
-            res.status(200).json({"user": user}).send();
+
+            const products = await user.$get('products')
+
+            res.status(200).json({"user": user, "products": products}).send();
         } catch (err) {
             res.status(400).json({"error": "User not found"}).send();
         }
 
+    },
+
+    async getProducts(req: Request, res: Response) {
+        try {
+            const user = await User.findByPk(req.params["id"]);
+            if (user === null) throw new Error;
+
+            const products = await user.$get('products')
+
+            res.status(200).json({"products": products}).send();
+        } catch (err) {
+            res.status(400).json({"error": "User not found"}).send();
+        }
     },
 
     async list(req: Request, res: Response) {
@@ -53,7 +68,6 @@ export default {
         try {
             const user = await User.findByPk(req.params["id"]);
             if (user === null) throw new Error;
-
             user.destroy();
             res.status(200).json({"user": "User has been successfully deleted"})
         } catch (err) {

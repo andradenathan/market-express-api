@@ -1,19 +1,21 @@
-import { DataTypes, Model } from 'sequelize';
-import { sequelize } from '../database/config'
+import { AllowNull, BelongsTo, Column, DataType, Table, Model, ForeignKey } from 'sequelize-typescript';
+import { User } from './User';
 
-export class Product extends Model {}
+@Table
+export class Product extends Model {
 
-Product.init({
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    value: {
-        type: DataTypes.FLOAT.UNSIGNED,
-        allowNull: false
-    }
+    @AllowNull(false)
+    @Column({type: DataType.STRING})
+    name!: string;
 
-}, {
-    sequelize,
-    modelName: 'Product'
-});
+    @AllowNull(false)
+    @Column({type: DataType.FLOAT})
+    value!: Number;
+
+    @ForeignKey(() => User)
+    @Column({type: DataType.BIGINT})
+    ownerId!: number;
+
+    @BelongsTo(() => User)
+    owner!: User;
+}
