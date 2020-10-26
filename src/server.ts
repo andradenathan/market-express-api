@@ -9,20 +9,12 @@ import ProductsController from './controllers/ProductsController';
 import UsersController from './controllers/UsersController';
 
 
-
 const app = express();
-
-
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-
 app.post('/sync', startDb);
-
-// Rotas de Autenticação
-
-
 
 // Rotas de produtos
 app.get('/products/:id', ProductsController.get);
