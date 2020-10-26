@@ -41,9 +41,8 @@ export default {
             const user = await User.findByPk(req.params["id"]);
             if (user === null) throw new Error;
 
-            const products = await user.$get('products')
-
-            res.status(200).json({"user": user, "products": products}).send();
+            const address = await user.$get('address')
+            res.status(200).json({"user": user, "address": address}).send();
         } catch (err) {
             res.status(400).json({"error": "User not found"}).send();
         }

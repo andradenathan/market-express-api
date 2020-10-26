@@ -1,4 +1,5 @@
-import { Column, DataType, Table, Model, HasMany, BelongsToMany, AllowNull } from 'sequelize-typescript';
+import { Column, DataType, Table, Model, HasMany, BelongsToMany, AllowNull, HasOne, Unique,  } from 'sequelize-typescript';
+import { Address } from './Address';
 import { Offer } from './Offer';
 import { Product } from './Product';
 
@@ -14,6 +15,7 @@ export class User extends Model {
     password!: string;
 
     @AllowNull(false)
+    @Unique
     @Column({type: DataType.STRING})
     email!: string;
 
@@ -22,5 +24,8 @@ export class User extends Model {
 
     @BelongsToMany(() => Product, () => Offer)
     offers!: Product[];
+
+    @HasOne(() => Address)
+    address!: Address;
 }
 

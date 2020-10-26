@@ -20,7 +20,7 @@ app.post('/sync', startDb);
 app.get('/products/:id', ProductsController.get);
 app.get('/products', ProductsController.list);
 app.get('/products/:id/owner', ProductsController.getOwner);
-app.get('/products/:id/offers', ProductsController.getoffers);
+app.get('/products/:id/offers', ProductsController.getOffers);
 app.post('/products', ProductsController.create);
 app.post('/products/:product_id/owner/:user_id', ProductsController.setOwner);
 app.put('/products/:id', ProductsController.update);
@@ -38,6 +38,7 @@ app.delete('/users/:id', UsersController.delete);
 
 // Rotas de endereços
 app.post('/address', AddressesController.create);
+app.post('/addresses/:address_id/user/:user_id', AddressesController.setUser);
 app.put('/addresses/:id', AddressesController.update);
 app.delete('/addresses/:id', AddressesController.delete);
 

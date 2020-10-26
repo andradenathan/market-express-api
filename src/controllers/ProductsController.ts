@@ -44,7 +44,7 @@ export default {
 
     },
 
-    async getoffers(req: Request, res: Response) {
+    async getOffers(req: Request, res: Response) {
         try {
             const product = await Product.findByPk(req.params["id"]);
             if (product === null) throw new Error;

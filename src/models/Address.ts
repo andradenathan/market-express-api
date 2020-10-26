@@ -1,22 +1,25 @@
-import { DataTypes, Model } from 'sequelize';
-import { sequelize } from '../database/config';
+import { Table, Model, Column, ForeignKey, DataType, AllowNull, BelongsTo } from "sequelize-typescript";
+import { User } from "./User";
 
-export class Address extends Model {}
+@Table
+export class Address extends Model {
+    @AllowNull(false)
+    @ForeignKey(() => User)
+    @Column({type: DataType.BIGINT})
+    userId!: number;
+    
+    @AllowNull(false)
+    @Column({type: DataType.STRING})
+    street!: string;
+    
+    @AllowNull(false)
+    @Column({type: DataType.STRING})
+    city!: string;
 
-Address.init({
-    street: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    district: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-    city: {
-        type: DataTypes.STRING,
-        allowNull: false
-    }
-}, {
-    sequelize,
-    modelName: 'Address'
-})
+    @AllowNull(false)
+    @Column({type: DataType.STRING})
+    district!: string;
+
+    @BelongsTo(() => User)
+    user!: User;
+}
