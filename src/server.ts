@@ -31,7 +31,7 @@ app.get('/users', UsersController.list);
 app.get('/users/:id/products', UsersController.getProducts);
 app.get('/users/:id/offers', UsersController.getOffers);
 app.post('/users', Validators.validateUser('create'), UsersController.create);
-app.post('/users/:user_id/offers/:product_id', UsersController.makeOffer);
+app.post('/users/:user_id/offers/:product_id',Validators.validadeOffer(), UsersController.makeOffer);
 app.put('/users/:id',Validators.validateUser('update'), UsersController.update);
 app.delete('/users/:id', UsersController.delete);
 

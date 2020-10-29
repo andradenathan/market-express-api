@@ -1,5 +1,6 @@
 import { body } from "express-validator";
 import { toDefaultValue } from "sequelize/types/lib/utils";
+import { User } from "../models/User";
 
 export default {
 
@@ -14,8 +15,9 @@ export default {
 
                     body('value')
                         .exists().withMessage('A value is required.')
-                        .isCurrency({symbol:'', digits_after_decimal: [0,1,2]})
+                        .isCurrency({symbol: ''})
                         .withMessage('Value must be a valid price')
+                        .custom(PositivePrice)
                 ];
             }
             case 'update': {
@@ -27,8 +29,9 @@ export default {
 
                     body('value')
                         .optional()
-                        .isCurrency({symbol:'', digits_after_decimal: [0,1,2]})
+                        .isCurrency({symbol: ''})
                         .withMessage('Value must be a valid price')
+                        .custom(PositivePrice)
                 ];
             }
         }
@@ -40,7 +43,8 @@ export default {
                 return [
                     body('email')
                         .exists().withMessage('An email account is required')
-                        .isEmail().withMessage('Invalid email'),
+                        .isEmail().withMessage('Invalid email')
+                        .custom(emailInUse),
 
                     body('password')
                         .exists().withMessage('A password is required.')
@@ -63,7 +67,8 @@ export default {
                 return [
                     body('email')
                         .optional()
-                        .isEmail().withMessage('Invalid email'),
+                        .isEmail().withMessage('Invalid email')
+                        .custom(emailInUse),
 
                     body('password')
                         .optional()
@@ -83,6 +88,15 @@ export default {
             }
         }
     },
+
+    validadeOffer() {
+        return [
+            body('value')
+            .isCurrency({symbol: ''})
+            .withMessage('Value must be a valid price')
+            .custom(PositivePrice)
+        ];
+    }
 }
 
 const validateDOB = (date: Date) => {
@@ -90,4 +104,22 @@ const validateDOB = (date: Date) => {
         return Promise.reject('Date of birth must be in the past');
     }
     return Promise.resolve();
+}
+
+const PositivePrice = (price: number) => {
+    if(price <= 0) {
+        return Promise.reject('Value must be a valid price');
+    }
+    return Promise.resolve();
+}
+
+const emailInUse = async (email: string) => {
+    try {
+        const user = await User.findOne({where: {'email': email}});
+        if (user) return Promise.reject('Email already in use');
+        return Promise.resolve();
+
+    } catch(err) {
+        return Promise.reject('Error verifying email');
+    }
 }

@@ -23,8 +23,14 @@ export default {
 
     async makeOffer(req: Request, res: Response) {
         try {
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                return res.status(422).json({"errors": errors});
+            }
+
             const user = await User.findByPk(req.params["user_id"]);
             if (user === null) throw new Error;
+            
             const product = await Product.findByPk(req.params["product_id"]);
             if (product === null) throw new Error;
 
