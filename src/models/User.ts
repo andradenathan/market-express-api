@@ -19,6 +19,10 @@ export class User extends Model {
     @Column({type: DataType.STRING})
     email!: string;
 
+    @AllowNull(false)
+    @Column({type: DataType.DATE})
+    date_of_birth!: Date
+
     @HasMany(() => Product)
     products!: Product[];
 

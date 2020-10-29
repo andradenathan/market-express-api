@@ -50,6 +50,11 @@ export default {
                         .exists().withMessage('A name is equired')
                         .isLength({min: 2}).withMessage('The name must be' +
                         ' at least 2 characters long'),
+
+                    body('date_of_birth')
+                        .exists().withMessage('A date of birth is required.')
+                        .isDate().withMessage('Date of birth must be a valid date')
+                        
                 ];
             }
             case 'update': {
@@ -67,6 +72,11 @@ export default {
                         .optional()
                         .isLength({min: 2}).withMessage('The name must be' +
                         ' at least 2 characters long'),
+
+                    body('date_of_birth')
+                        .optional()
+                        .isDate().withMessage('Date of birth must be a valid date')
+                        .toDate()
                 ];
             }
         }
