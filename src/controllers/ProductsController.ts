@@ -3,11 +3,48 @@ import {Request, Response} from "express"
 import { sequelize } from "../database/config";
 import { User } from "../models/User";
 import { Offer } from "../models/Offer";
+import { body, validationResult } from "express-validator";
 
 export default {
 
+    validate(method: String) : any {
+        switch (method) {
+            case 'create': {
+                return [
+                    body('name')
+                        .exists().withMessage('A name is equired')
+                        .isLength({min: 2}).withMessage('The name must be' +
+                        ' at least 2 characters long'),
+
+                    body('value')
+                        .exists().withMessage('A value is required.')
+                        .isCurrency({symbol:'', digits_after_decimal: [0,1,2]})
+                        .withMessage('Value must be a valid price')
+                ];
+            }
+            case 'update': {
+                return [
+                    body('name')
+                        .optional()
+                        .isLength({min: 2}).withMessage('The name must be' +
+                        ' at least 2 characters long'),
+
+                    body('value')
+                        .optional()
+                        .isCurrency({symbol:'', digits_after_decimal: [0,1,2]})
+                        .withMessage('Value must be a valid price')
+                ];
+            }
+        }
+    },
+    
     async create(req: Request, res: Response) {
         try {
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                return res.status(422).json({"errors": errors});
+            }
+            
             const product = await Product.create(req.body);
             res.status(201).json({"product": product}).send();
 
@@ -72,6 +109,11 @@ export default {
 
     async update(req: Request, res: Response) {
         try {
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                return res.status(422).json({"errors": errors});
+            }
+
             const product = await Product.findByPk(req.params["id"]);
             if (product === null) throw new Error;
 
@@ -115,15 +157,4 @@ export default {
         }
 
     },
-
-    async sync(req: Request, res: Response) {
-
-        try {
-            await sequelize.sync({ force: true });
-            await sequelize.authenticate();
-            res.status(200).json('Connection has been established successfully.').send;
-        } catch (error) {
-            res.status(400).json({'Unable to connect to the database': error}).send;
-        }
-    }
 }

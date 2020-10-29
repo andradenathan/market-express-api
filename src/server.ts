@@ -1,9 +1,7 @@
 import bodyParser from 'body-parser';
 import express from 'express';
 import { sequelize } from './database/config';
-
 import {Request, Response} from "express"
-
 import AddressesController from './controllers/AddressesController';
 import ProductsController from './controllers/ProductsController';
 import UsersController from './controllers/UsersController';
@@ -21,9 +19,9 @@ app.get('/products/:id', ProductsController.get);
 app.get('/products', ProductsController.list);
 app.get('/products/:id/owner', ProductsController.getOwner);
 app.get('/products/:id/offers', ProductsController.getOffers);
-app.post('/products', ProductsController.create);
+app.post('/products', ProductsController.validate('create'), ProductsController.create);
 app.post('/products/:product_id/owner/:user_id', ProductsController.setOwner);
-app.put('/products/:id', ProductsController.update);
+app.put('/products/:id', ProductsController.validate('update'), ProductsController.update);
 app.delete('/products/:id', ProductsController.delete);
 
 // Rotas de usuários
