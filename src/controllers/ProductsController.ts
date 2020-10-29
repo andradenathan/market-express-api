@@ -1,9 +1,7 @@
 import { Product } from "../models/Product"
 import {Request, Response} from "express"
-import { sequelize } from "../database/config";
 import { User } from "../models/User";
-import { Offer } from "../models/Offer";
-import { body, validationResult } from "express-validator";
+import { validationResult } from "express-validator";
 
 export default {
     

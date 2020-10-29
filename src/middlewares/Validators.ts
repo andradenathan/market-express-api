@@ -1,4 +1,5 @@
 import { body } from "express-validator";
+import { toDefaultValue } from "sequelize/types/lib/utils";
 
 export default {
 
@@ -54,6 +55,7 @@ export default {
                     body('date_of_birth')
                         .exists().withMessage('A date of birth is required.')
                         .isDate().withMessage('Date of birth must be a valid date')
+                        .toDate().custom(validateDOB)
                         
                 ];
             }
@@ -76,9 +78,16 @@ export default {
                     body('date_of_birth')
                         .optional()
                         .isDate().withMessage('Date of birth must be a valid date')
-                        .toDate()
+                        .toDate().custom(validateDOB)
                 ];
             }
         }
     },
+}
+
+const validateDOB = (date: Date) => {
+    if (date.getTime() >= Date.now()) {
+        return Promise.reject('Date of birth must be in the past');
+    }
+    return Promise.resolve();
 }

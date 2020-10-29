@@ -1,9 +1,7 @@
 import { User } from "../models/User";
 import { Request, Response } from 'express'; 
 import { Product } from "../models/Product";
-import { json } from "body-parser";
-import { body, param, ValidationChain, validationResult } from 'express-validator';
-import { min } from "class-validator";
+import { validationResult } from 'express-validator';
 
 export default {
 
