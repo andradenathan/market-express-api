@@ -31,9 +31,9 @@ app.get('/users/:id', UsersController.get);
 app.get('/users', UsersController.list);
 app.get('/users/:id/products', UsersController.getProducts);
 app.get('/users/:id/offers', UsersController.getOffers);
-app.post('/users', UsersController.create);
+app.post('/users', UsersController.validate('create'), UsersController.create);
 app.post('/users/:user_id/offers/:product_id', UsersController.makeOffer);
-app.put('/users/:id', UsersController.update);
+app.put('/users/:id',UsersController.validate('update'), UsersController.update);
 app.delete('/users/:id', UsersController.delete);
 
 // Rotas de endereços
