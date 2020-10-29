@@ -6,37 +6,6 @@ import { Offer } from "../models/Offer";
 import { body, validationResult } from "express-validator";
 
 export default {
-
-    validate(method: String) : any {
-        switch (method) {
-            case 'create': {
-                return [
-                    body('name')
-                        .exists().withMessage('A name is equired')
-                        .isLength({min: 2}).withMessage('The name must be' +
-                        ' at least 2 characters long'),
-
-                    body('value')
-                        .exists().withMessage('A value is required.')
-                        .isCurrency({symbol:'', digits_after_decimal: [0,1,2]})
-                        .withMessage('Value must be a valid price')
-                ];
-            }
-            case 'update': {
-                return [
-                    body('name')
-                        .optional()
-                        .isLength({min: 2}).withMessage('The name must be' +
-                        ' at least 2 characters long'),
-
-                    body('value')
-                        .optional()
-                        .isCurrency({symbol:'', digits_after_decimal: [0,1,2]})
-                        .withMessage('Value must be a valid price')
-                ];
-            }
-        }
-    },
     
     async create(req: Request, res: Response) {
         try {
