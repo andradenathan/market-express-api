@@ -88,7 +88,7 @@ export default {
 
     async update(req: Request, res: Response) {
         try {
-            const user = await User.findByPk(req.params["id"]);
+            const user = await User.findByPk(req.body.id);
             if (user === null) throw new Error;
 
             user.update(req.body);

@@ -7,6 +7,8 @@ import {Request, Response} from "express"
 import AddressesController from './controllers/AddressesController';
 import ProductsController from './controllers/ProductsController';
 import UsersController from './controllers/UsersController';
+import SessionController from './controllers/SessionController';
+import Auth from './middlewares/Auth';
 
 
 const app = express();
@@ -15,6 +17,10 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.post('/sync', startDb);
+
+// Rotas de autenticação
+app.post('/auth/login', SessionController.login);
+
 
 // Rotas de produtos
 app.get('/products/:id', ProductsController.get);
@@ -33,7 +39,7 @@ app.get('/users/:id/products', UsersController.getProducts);
 app.get('/users/:id/offers', UsersController.getOffers);
 app.post('/users', UsersController.create);
 app.post('/users/:user_id/offers/:product_id', UsersController.makeOffer);
-app.put('/users/:id', UsersController.update);
+app.put('/auth/users', Auth, UsersController.update);
 app.delete('/users/:id', UsersController.delete);
 
 // Rotas de endereços

@@ -1,7 +1,10 @@
-import { Column, DataType, Table, Model, HasMany, BelongsToMany, AllowNull, HasOne, Unique,  } from 'sequelize-typescript';
+import { Column, DataType, Table, Model, HasMany, BelongsToMany, AllowNull, HasOne, Unique, BeforeCreate } from 'sequelize-typescript';
 import { Address } from './Address';
 import { Offer } from './Offer';
 import { Product } from './Product';
+import bcrypt  from 'bcrypt';
+
+
 
 @Table
 export class User extends Model {
@@ -19,7 +22,22 @@ export class User extends Model {
     @Column({type: DataType.STRING})
     email!: string;
 
-    @HasMany(() => Product)
+
+    @BeforeCreate
+    static async hashPassword(user: User){
+        if(user.password){
+            user.password = await bcrypt.hash(user.password, 10);
+        }
+    }
+ 
+    async comparePassword(attempt: string): Promise<boolean> {
+        return await bcrypt.compare(attempt, this.password);
+    }
+
+    @HasMany(() => Product, {
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+    })
     products!: Product[];
 
     @BelongsToMany(() => Product, () => Offer)
@@ -28,4 +46,3 @@ export class User extends Model {
     @HasOne(() => Address)
     address!: Address;
 }
-
