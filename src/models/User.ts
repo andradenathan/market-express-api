@@ -22,6 +22,7 @@ export class User extends Model {
     @Column({type: DataType.STRING})
     email!: string;
 
+<<<<<<< HEAD
 
     @BeforeCreate
     static async hashPassword(user: User){
@@ -38,6 +39,13 @@ export class User extends Model {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
     })
+=======
+    @AllowNull(false)
+    @Column({type: DataType.DATE})
+    date_of_birth!: Date
+
+    @HasMany(() => Product)
+>>>>>>> ab9158d9257c74f91b4d560f2413c4ac8d2415b2
     products!: Product[];
 
     @BelongsToMany(() => Product, () => Offer)

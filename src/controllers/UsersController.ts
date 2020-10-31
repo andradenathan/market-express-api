@@ -1,12 +1,17 @@
 import { User } from "../models/User";
 import { Request, Response } from 'express'; 
 import { Product } from "../models/Product";
-import { json } from "body-parser";
+import { validationResult } from 'express-validator';
 
 export default {
 
     async create(req: Request, res: Response) {
         try {
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                return res.status(422).json({"errors": errors});
+            }
+
             const user = await User.create(req.body);
             res.status(201).json({"user": user}).send();
 
@@ -18,8 +23,14 @@ export default {
 
     async makeOffer(req: Request, res: Response) {
         try {
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                return res.status(422).json({"errors": errors});
+            }
+
             const user = await User.findByPk(req.params["user_id"]);
             if (user === null) throw new Error;
+            
             const product = await Product.findByPk(req.params["product_id"]);
             if (product === null) throw new Error;
 
@@ -89,6 +100,11 @@ export default {
     async update(req: Request, res: Response) {
         try {
             const user = await User.findByPk(req.body.id);
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                return res.status(422).json({"errors": errors});
+            }
+
             if (user === null) throw new Error;
 
             user.update(req.body);

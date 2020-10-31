@@ -1,13 +1,17 @@
 import { Product } from "../models/Product"
 import {Request, Response} from "express"
-import { sequelize } from "../database/config";
 import { User } from "../models/User";
-import { Offer } from "../models/Offer";
+import { validationResult } from "express-validator";
 
 export default {
-
+    
     async create(req: Request, res: Response) {
         try {
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                return res.status(422).json({"errors": errors});
+            }
+            
             const product = await Product.create(req.body);
             res.status(201).json({"product": product}).send();
 
@@ -72,6 +76,11 @@ export default {
 
     async update(req: Request, res: Response) {
         try {
+            const errors = validationResult(req)
+            if (!errors.isEmpty()) {
+                return res.status(422).json({"errors": errors});
+            }
+
             const product = await Product.findByPk(req.params["id"]);
             if (product === null) throw new Error;
 
@@ -115,15 +124,4 @@ export default {
         }
 
     },
-
-    async sync(req: Request, res: Response) {
-
-        try {
-            await sequelize.sync({ force: true });
-            await sequelize.authenticate();
-            res.status(200).json('Connection has been established successfully.').send;
-        } catch (error) {
-            res.status(400).json({'Unable to connect to the database': error}).send;
-        }
-    }
 }
