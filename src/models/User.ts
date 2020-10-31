@@ -22,6 +22,9 @@ export class User extends Model {
     @Column({type: DataType.STRING})
     email!: string;
 
+    @AllowNull(false)
+    @Column({type: DataType.DATE})
+    date_of_birth!: Date
 
     @BeforeCreate
     static async hashPassword(user: User){
@@ -33,14 +36,6 @@ export class User extends Model {
     async comparePassword(attempt: string): Promise<boolean> {
         return await bcrypt.compare(attempt, this.password);
     }
-
-    @HasMany(() => Product, {
-        onDelete: "CASCADE",
-        onUpdate: "CASCADE",
-    })
-    @AllowNull(false)
-    @Column({type: DataType.DATE})
-    date_of_birth!: Date
 
     @HasMany(() => Product)
     products!: Product[];
