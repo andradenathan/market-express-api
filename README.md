@@ -19,7 +19,7 @@ Toda vez que sincronizado com o servidor pela rota, o banco de dados também se 
 
 Isto é algo que estamos pesquisando para melhorar em breve.
 
-No arquivo tsconfig.js, por questões de melhoria na perfomance, optamos por utilizar o ECMA Script 2017 (a configuração do campo "target").
+No arquivo tsconfig.js, por questões de melhoria na perfomance do TypeScript, optamos por utilizar o ECMA Script 2017 (a configuração do campo "target").
 
 Após isso, no arquivo package.json, crie um campo "scripts" abaixo de main e adicione essa linha:
 
