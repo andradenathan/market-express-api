@@ -21,7 +21,7 @@ export default {
         const name = user.name; 
 
         return res.status(201).json({
-            user: user,
+            success: "You are successfully connected, " + user.name,
             token: jwt.sign({id}, '6508918172', {expiresIn: '7d'})
         })
     }
