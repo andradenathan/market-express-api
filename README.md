@@ -50,5 +50,8 @@ possa reconhecer com mais facilidade o que contém nos módulos do Express.
 - [Documentação - Sequelize](https://sequelize.org/master/manual/getting-started.html)
 - [Documentação - Sequelize CLI TypeScript](https://www.npmjs.com/package/sequelize-cli-typescript)
 
+# Autores
+Projeto desenvolvido por [Nathan Andrade](https://github.com/andradenathan) e [Gabriel Cunha](https://github.com/GabrielCunha105).
+
 
 
