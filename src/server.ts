@@ -48,7 +48,7 @@ app.put('/addresses/:id', AddressesController.update);
 app.delete('/addresses/:id', AddressesController.delete);
 
 
-app.listen(5000);
+app.listen(process.env.PORT?.valueOf());
 
 
 async function startDb(req: Request, res: Response) {
@@ -56,7 +56,7 @@ async function startDb(req: Request, res: Response) {
     try {
         await sequelize.sync({ force: true });
         await sequelize.authenticate();
-        res.status(200).json('Connection has been established successfully: ').send;
+        res.status(200).json('Connection has been established successfully').send;
     } catch (error) {
         res.status(400).json({'Unable to connect to the database': error}).send;
     }
