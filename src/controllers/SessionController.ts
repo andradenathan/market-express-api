@@ -13,15 +13,21 @@ export default {
             return res.status(401).json({error: 'Wrong email'})
         }
 
-        if(!user.comparePassword(password)) {
-            return res.status(401).json({error: 'Wrong password'})
+        try {
+            const authorized = await user.comparePassword(password);
+            if(!(authorized === true)) {
+                return res.status(401).json({error: 'Wrong password'})
+            }
+        } catch (err) {
+            return res.status(500).json({'error': err.message()});
         }
 
+
         const id = user.id;
-        const name = user.name; 
+        const name = user.name;
 
         return res.status(201).json({
-            success: "You are successfully connected, " + user.name,
+            success: "You are successfully connected, " + name,
             token: jwt.sign({id}, '6508918172', {expiresIn: '7d'})
         })
     }
