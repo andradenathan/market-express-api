@@ -28,13 +28,21 @@ export class User extends Model {
 
     @BeforeCreate
     static async hashPassword(user: User){
-        if(user.password){
-            user.password = await bcrypt.hash(user.password, 10);
+        try {
+            if(user.password){
+                user.password = await bcrypt.hash(user.password, 10);
+            }
+        } catch(err) {
+            return err;
         }
     }
  
     async comparePassword(attempt: string): Promise<boolean> {
-        return await bcrypt.compare(attempt, this.password);
+        try {
+            return await bcrypt.compare(attempt, this.password);
+        } catch (err) {
+            return err;
+        }
     }
 
     @HasMany(() => Product)
