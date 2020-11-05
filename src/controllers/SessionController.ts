@@ -10,7 +10,7 @@ export default {
         
         const user = await User.findOne({where: {email: email}})
         if(!user) {
-            return res.status(401).json({error: 'Wrong email'})
+            return res.status(401).json({error: 'User not found'})
         }
 
         if(!user.comparePassword(password)) {
@@ -21,7 +21,7 @@ export default {
         const name = user.name; 
 
         return res.status(201).json({
-            success: "You are successfully connected, " + user.name,
+            success: "You are successfully connected, " + name,
             token: jwt.sign({id}, '6508918172', {expiresIn: '7d'})
         })
     }
