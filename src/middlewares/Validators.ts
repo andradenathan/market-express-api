@@ -1,5 +1,7 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
+import { request } from "http";
 import { toDefaultValue } from "sequelize/types/lib/utils";
+import { Product } from "../models/Product";
 import { User } from "../models/User";
 
 export default {
@@ -92,9 +94,11 @@ export default {
     validadeOffer() {
         return [
             body('value')
-            .isCurrency({symbol: ''})
-            .withMessage('Value must be a valid price')
-            .custom(PositivePrice)
+                .isCurrency({symbol: ''})
+                .withMessage('Value must be a valid price')
+                .custom(PositivePrice),
+            param('user_id').custom(userExists),
+            param('product_id').custom(productExists)
         ];
     }
 }
@@ -121,5 +125,27 @@ const emailInUse = async (email: string) => {
 
     } catch(err) {
         return Promise.reject('Error verifying email');
+    }
+}
+
+const userExists = async (id: any) => {
+    try {
+        const user = await User.findByPk(id);
+        if (!user) return Promise.reject('No user with id ' + id);
+        return Promise.resolve();
+
+    } catch(err) {
+        return Promise.reject('Error verifying user');
+    }
+}
+
+const productExists = async (id: any) => {
+    try {
+        const product = await Product.findByPk(id);
+        if (!product) return Promise.reject('No product with id ' + id);
+        return Promise.resolve();
+
+    } catch(err) {
+        return Promise.reject('Error verifying product');
     }
 }

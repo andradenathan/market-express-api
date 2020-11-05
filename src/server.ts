@@ -8,6 +8,7 @@ import UsersController from './controllers/UsersController';
 import SessionController from './controllers/SessionController';
 import Auth from './middlewares/Auth';
 import Validators from './middlewares/Validators';
+import { validate as validateOffer } from './middlewares/OfferMiddleware';
 
 
 const app = express();
@@ -37,7 +38,7 @@ app.get('/users', UsersController.list);
 app.get('/users/:id/products', UsersController.getProducts);
 app.get('/users/:id/offers', UsersController.getOffers);
 app.post('/users', Validators.validateUser('create'), UsersController.create);
-app.post('/users/:user_id/offers/:product_id',Validators.validadeOffer(), UsersController.makeOffer);
+app.post('/users/:user_id/offers/:product_id', Validators.validadeOffer(), validateOffer, UsersController.makeOffer);
 app.put('/users', Auth, Validators.validateUser('update'), UsersController.update);
 app.delete('/users/:id', UsersController.delete);
 
