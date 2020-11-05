@@ -8,6 +8,8 @@ import UsersController from './controllers/UsersController';
 import SessionController from './controllers/SessionController';
 import Auth from './middlewares/Auth';
 import Validators from './middlewares/Validators';
+import Mail from './services/Mail';
+
 
 
 const app = express();
@@ -46,6 +48,19 @@ app.post('/address', AddressesController.create);
 app.post('/addresses/:address_id/user/:user_id', AddressesController.setUser);
 app.put('/addresses/:id', AddressesController.update);
 app.delete('/addresses/:id', AddressesController.delete);
+
+// Rotas de email
+
+app.post('/mail', (req: Request, res: Response) => {
+    const message = Object.assign({}, req.body);
+    Mail.to = message.to;
+    Mail.subject = message.subject;
+    Mail.message = message.message;
+    let result = Mail.sendMail();
+
+    res.status(200).json({'success': "Email successfully sent"})
+
+});
 
 
 app.listen(process.env.PORT?.valueOf());
