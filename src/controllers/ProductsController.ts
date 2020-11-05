@@ -7,10 +7,7 @@ export default {
     
     async create(req: Request, res: Response) {
         try {
-            const errors = validationResult(req)
-            if (!errors.isEmpty()) {
-                return res.status(422).json({"errors": errors});
-            }
+            validationResult(req).throw();
             
             const product = await Product.create(req.body);
             res.status(201).json({"product": product}).send();
@@ -76,10 +73,7 @@ export default {
 
     async update(req: Request, res: Response) {
         try {
-            const errors = validationResult(req)
-            if (!errors.isEmpty()) {
-                return res.status(422).json({"errors": errors});
-            }
+            validationResult(req).throw();
 
             const product = await Product.findByPk(req.params["id"]);
             if (product === null) throw new Error;
