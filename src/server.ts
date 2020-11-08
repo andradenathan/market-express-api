@@ -9,6 +9,7 @@ import SessionController from './controllers/SessionController';
 import Auth from './middlewares/Auth';
 import Validators from './middlewares/Validators';
 import { validate as validateOffer } from './middlewares/OfferMiddleware';
+import { seedDB } from './seeder/Seeder';
 
 
 const app = express();
@@ -16,7 +17,7 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.post('/sync', startDb);
+app.post('/startDb', startDb);
 
 // Rotas de autenticação
 app.post('/auth/login', SessionController.login);
@@ -48,6 +49,8 @@ app.post('/addresses/:address_id/user/:user_id', AddressesController.setUser);
 app.put('/addresses/:id', AddressesController.update);
 app.delete('/addresses/:id', AddressesController.delete);
 
+// Rotas de seeder
+app.post('/seeders/:n', seedDB);
 
 app.listen(process.env.PORT?.valueOf());
 
