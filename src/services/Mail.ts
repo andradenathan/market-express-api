@@ -1,5 +1,5 @@
 import * as nodemailer from "nodemailer";
-import config from '../config/MailConfig';
+import { config } from 'dotenv';
 
 class Mail {
     constructor(
@@ -15,13 +15,14 @@ class Mail {
             html: this.message
         };
 
+
         const transporter = nodemailer.createTransport({
-            host: config.host,
-            port: config.port,
+            host: process.env.MAIL_HOST as string,
+            port: Number(process.env.MAIL_PORT),
             secure: false,
             auth: {
-                user: config.user,
-                pass: config.password
+                user: process.env.MAIL_USER as string,
+                pass: process.env.MAIL_PASSWORD as string,
             },
             tls: { rejectUnauthorized: false }
         });
