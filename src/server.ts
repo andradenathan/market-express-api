@@ -1,7 +1,5 @@
 import bodyParser from 'body-parser';
 import express from 'express';
-import { sequelize } from './database/config';
-import {Request, Response} from "express"
 import AddressesController from './controllers/AddressesController';
 import ProductsController from './controllers/ProductsController';
 import UsersController from './controllers/UsersController';
@@ -10,18 +8,15 @@ import Auth from './middlewares/Auth';
 import Validators from './middlewares/Validators';
 import { validate as validateOffer } from './middlewares/OfferMiddleware';
 import { seedDB } from './seeder/Seeder';
-
+import { startDb } from './database/start';
 
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.post('/startDb', startDb);
-
 // Rotas de autenticação
 app.post('/auth/login', SessionController.login);
-
 
 // Rotas de produtos
 app.get('/products/:id', ProductsController.get);
@@ -49,19 +44,8 @@ app.post('/addresses/:address_id/user/:user_id', AddressesController.setUser);
 app.put('/addresses/:id', AddressesController.update);
 app.delete('/addresses/:id', AddressesController.delete);
 
-// Rotas de seeder
+// Rotas de desenvolvimento
+app.post('/startDb', startDb);
 app.post('/seeders/:n', seedDB);
 
 app.listen(process.env.PORT?.valueOf());
-
-
-async function startDb(req: Request, res: Response) {
-
-    try {
-        await sequelize.sync({ force: true });
-        await sequelize.authenticate();
-        res.status(200).json('Connection has been established successfully').send;
-    } catch (error) {
-        res.status(400).json({'Unable to connect to the database': error}).send;
-    }
-}
