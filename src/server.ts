@@ -8,7 +8,7 @@ import Auth from './middlewares/Auth';
 import Validators from './middlewares/Validators';
 import MailController from './controllers/MailController';
 import { validate as validateOffer } from './middlewares/OfferMiddleware';
-import { seedDB } from './seeder/Seeder';
+import { seedDB } from './seeders/Seeder';
 import { startDb } from './database/start';
 
 const app = express();
