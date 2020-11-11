@@ -1,4 +1,4 @@
 export default {
-    secret: process.env.PASSPORT_SECRET? process.env.PASSPORT_SECRET:'',
-    expiresIn: process.env.PASSPORT_EXPIRES_IN,
+    secret: '6508918172',
+    expiresIn: '7d',
 }
