@@ -10,6 +10,12 @@ export default {
             validationResult(req).throw();
 
             const user = await User.create(req.body);
+
+            const requestImages = req.files as Express.Multer.File[];
+            requestImages.map(image => {
+                return { photo: image.filename }
+            });
+
             res.status(201).json({"user": user}).send();
 
             } catch (err) {

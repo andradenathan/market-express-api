@@ -22,6 +22,10 @@ export class User extends Model {
     @Column({type: DataType.STRING})
     email!: string;
 
+    @AllowNull(true)
+    @Column({type: DataType.STRING})
+    photo!: string;
+
     @AllowNull(false)
     @Column({type: DataType.DATE})
     date_of_birth!: Date
