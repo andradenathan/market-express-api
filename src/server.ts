@@ -7,12 +7,13 @@ import SessionController from './controllers/SessionController';
 import Auth from './middlewares/Auth';
 import Validators from './middlewares/Validators';
 import MailController from './controllers/MailController';
-import { validate as validateOffer } from './middlewares/OfferMiddleware';
-import { seedDB } from './seeders/Seeder';
-import { startDb } from './database/start';
+import validateOffer from './middlewares/OfferMiddleware';
+import seedDB from './seeders/Seeder';
+import startDb from './database/start';
 import multer from 'multer';
 import uploadConfig from './config/Upload';
 import path from 'path';
+import Admin from './middlewares/Admin';
 
 
 const app = express();
@@ -25,33 +26,40 @@ app.use(bodyParser.json());
 
 
 // Rotas de autenticação
-app.post('/auth/login', SessionController.login);
+app.post('/users', Validators.validateUser('create'), upload.single('photo'), UsersController.create);
+app.post('/users/login', SessionController.login);
 
 // Rotas de produtos
 app.get('/products/:id', ProductsController.get);
 app.get('/products', ProductsController.list);
 app.get('/products/:id/owner', ProductsController.getOwner);
 app.get('/products/:id/offers', ProductsController.getOffers);
-app.post('/products', Validators.validateProduct('create'), ProductsController.create);
-app.post('/products/:product_id/owner/:user_id', ProductsController.setOwner);
-app.put('/products/:id', Validators.validateProduct('update'), ProductsController.update);
-app.delete('/products/:id', ProductsController.delete);
+app.post('/products', Auth, Validators.validateProduct('create'), ProductsController.create);
+//app.post('/products/:product_id/owner/:user_id', ProductsController.setOwner);
+app.put('/products/:id', Auth, Validators.validateProduct('update'), ProductsController.update);
+app.delete('/products/:id', Auth, ProductsController.delete);
 
-// Rotas de usuários
-app.get('/users/:id', UsersController.get);
-app.get('/users', UsersController.list);
-app.get('/users/:id/products', UsersController.getProducts);
-app.get('/users/:id/offers', UsersController.getOffers);
-app.post('/users', Validators.validateUser('create'), upload.single('photo'), UsersController.create);
-app.post('/users/:user_id/offers/:product_id', Validators.validadeOffer(), validateOffer, UsersController.makeOffer);
-app.put('/users', Auth, Validators.validateUser('update'), UsersController.update);
-app.delete('/users/:id', UsersController.delete);
+// Rotas de usuário logado
+app.get('/users/curr', Auth, UsersController.get);
+app.get('/users/curr/products', Auth, UsersController.getProducts);
+app.get('/users/curr/offers', Auth, UsersController.getOffers);
+app.post('/users/curr/offers/:product_id', Validators.validadeOffer(), Auth, validateOffer, UsersController.makeOffer);
+app.put('/users/curr', Auth, Validators.validateUser('update'), UsersController.update);
+app.delete('/users/curr', Auth, UsersController.delete);
+
+// Rotas de Admin
+app.get('/users/:id', Auth, Admin, UsersController.get);
+app.get('/users/all', Auth, Admin, UsersController.list);
+app.get('/users/:id/products', Auth, Admin, UsersController.getProducts);
+app.get('/users/:id/offers', Auth, Admin, UsersController.getOffers);
+app.put('/users/:id', Auth, Admin, Validators.validateUser('update'), UsersController.update);
+app.delete('/users/:id', Auth, Admin, UsersController.delete);
 
 // Rotas de endereços
-app.post('/address', AddressesController.create);
-app.post('/addresses/:address_id/user/:user_id', AddressesController.setUser);
-app.put('/addresses/:id', AddressesController.update);
-app.delete('/addresses/:id', AddressesController.delete);
+app.post('/addresses', Auth, AddressesController.create);
+//app.post('/addresses/:address_id/user/:user_id', AddressesController.setUser);
+app.put('/addresses/', Auth, AddressesController.update);
+app.delete('/addresses', Auth, AddressesController.delete);
 
 // Rota de email
 app.post('/mail', MailController.mail);

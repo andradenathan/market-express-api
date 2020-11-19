@@ -29,7 +29,7 @@ export default {
         try {
             validationResult(req).throw();
 
-            const user = await User.findByPk(req.params["user_id"]);
+            const user = await User.findByPk(req.body.id);
             if (user === null) throw new Error;
             
             const product = await Product.findByPk(req.params["product_id"]);
@@ -50,7 +50,10 @@ export default {
 
     async get(req: Request, res: Response) {
         try {
-            const user = await User.findByPk(req.params["id"]);
+            const user = req.params["id"]? 
+            await User.findByPk(req.params["id"]):
+            await User.findByPk(req.body.id);
+
             if (user === null) throw new Error;
 
             const address = await user.$get('address')
@@ -63,7 +66,10 @@ export default {
 
     async getProducts(req: Request, res: Response) {
         try {
-            const user = await User.findByPk(req.params["id"]);
+            const user = req.params["id"]? 
+            await User.findByPk(req.params["id"]):
+            await User.findByPk(req.body.id);
+
             if (user === null) throw new Error;
 
             const products = await user.$get('products')
@@ -76,7 +82,10 @@ export default {
 
     async getOffers(req: Request, res: Response) {
         try {
-            const user = await User.findByPk(req.params["id"]);
+            const user = req.params["id"]? 
+            await User.findByPk(req.params["id"]):
+            await User.findByPk(req.body.id);
+
             if (user === null) throw new Error;
 
             const offers = await user.$get('offers')
@@ -102,7 +111,10 @@ export default {
         try {
             validationResult(req).throw();
             
-            const user = await User.findByPk(req.body.id);
+            const user = req.params["id"]? 
+            await User.findByPk(req.params["id"]):
+            await User.findByPk(req.body.id);
+
             if (user === null) throw new Error;
 
             user.update(req.body);
@@ -115,8 +127,13 @@ export default {
 
     async delete(req: Request, res: Response) {
         try {
-            const user = await User.findByPk(req.params["id"]);
+            const user = req.params["id"]? 
+
+            await User.findByPk(req.params["id"]):
+            await User.findByPk(req.body.id);
+
             if (user === null) throw new Error;
+
             user.destroy();
             res.status(200).json({"user": "User has been successfully deleted"})
         } catch (err) {

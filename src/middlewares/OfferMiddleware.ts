@@ -2,7 +2,7 @@ import { Product } from "../models/Product"
 import { Request, Response } from 'express'; 
 import { User } from "../models/User";
 
-export const validate = async (req: Request, res: Response, next: any) => {
+export default async (req: Request, res: Response, next: any) => {
     try {
         const product = await Product.findByPk(req.params['product_id']);
         const user = await User.findByPk(req.params['user_id']);
