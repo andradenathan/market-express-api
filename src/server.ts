@@ -18,7 +18,9 @@ import path from 'path';
 const app = express();
 const upload = multer(uploadConfig);
 
+
 app.use(bodyParser.urlencoded({extended: true}));
+
 app.use(bodyParser.json());
 
 
