@@ -1,7 +1,7 @@
 import { sequelize } from "./config";
 import { Request, Response } from 'express'; 
 
-export async function startDb(req: Request, res: Response) {
+export default async (req: Request, res: Response) => {
     if (process.env.NODE_ENV !== "development") {
         res.status(401).json({'error': "Can't restart DB in production"}).send;
     }

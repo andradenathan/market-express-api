@@ -1,7 +1,7 @@
 import { Address } from '../models/Address';
 import faker from 'faker';
 
-export const seedAddresses = async (n: number) => {
+export default async (n: number) => {
     let addresses: object[] = [];
     for (let i = 0; i < n; i++) {
         addresses.push({

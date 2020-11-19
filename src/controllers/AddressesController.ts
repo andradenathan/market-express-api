@@ -6,7 +6,13 @@ import { Request, Response } from 'express';
 export default {
     async create(req: Request, res: Response) {
         try {
-            const address = await Address.create(req.body);
+            const user = await User.findByPk(req.body.id);
+            req.body.userId = req.body.id;
+            req.body.id = null;
+            const address = await Address.create(req.body)
+            await user?.$set('address', address);
+            console.log(req.body)
+            await user?.save();
             res.status(201).json({"address": address}).send();
 
         } catch (err) {
@@ -16,20 +22,22 @@ export default {
 
     async update(req: Request, res: Response) {
         try {
-            const address = await Address.findByPk(req.params["id"]);
-            if (address === null) throw new Error;
+            const user = await User.findByPk(req.body.id);
+            const address = await user?.$get('address');
+            if (!address) throw new Error;
 
             address.update(req.body);
             res.status(200).json({"address": address}).send();
         } catch(err) {
-            res.status(404).json({"error": "User not found"}).send();
+            res.status(500).json({"error": "internal server error"}).send();
         }
     },
 
     async delete(req: Request, res: Response) {
         try {
-            const address = await Address.findByPk(req.params["id"]);
-            if (address === null) throw new Error;
+            const user = await User.findByPk(req.body.id);
+            const address = await user?.$get('address');
+            if (!address) throw new Error;
 
             address.destroy();
             res.status(200).json({"address": "Address has been sucessfully deleted"})

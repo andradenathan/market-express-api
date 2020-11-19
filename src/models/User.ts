@@ -1,4 +1,4 @@
-import { Column, DataType, Table, Model, HasMany, BelongsToMany, AllowNull, HasOne, Unique, BeforeCreate } from 'sequelize-typescript';
+import { Column, DataType, Table, Model, HasMany, BelongsToMany, AllowNull, HasOne, Unique, BeforeCreate, Default } from 'sequelize-typescript';
 import { Address } from './Address';
 import { Offer } from './Offer';
 import { Product } from './Product';
@@ -30,6 +30,11 @@ export class User extends Model {
     @Column({type: DataType.DATE})
     date_of_birth!: Date
 
+    @AllowNull(false)
+    @Default(false)
+    @Column({type: DataType.BOOLEAN})
+    is_admin!: boolean
+
     @BeforeCreate
     static async hashPassword(user: User){
         try {
@@ -39,6 +44,11 @@ export class User extends Model {
         } catch(err) {
             return err;
         }
+    }
+
+    @BeforeCreate
+    static async revokePrivileges(user: User) {
+        user.is_admin = false;
     }
  
     async comparePassword(attempt: string): Promise<boolean> {

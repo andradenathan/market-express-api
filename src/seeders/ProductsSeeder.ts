@@ -1,7 +1,7 @@
 import { Product } from "../models/Product";
 import faker from 'faker';
 
-export const seedProducts = async (n: number) => {
+export default async (n: number) => {
     let products: object[] = [];
     for (let i = 0; i < n; i++) {
         products.push({
