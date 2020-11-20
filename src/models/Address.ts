@@ -3,7 +3,7 @@ import { User } from "./User";
 
 @Table
 export class Address extends Model {
-    @AllowNull(false)
+    @AllowNull(true)
     @ForeignKey(() => User)
     @Column({type: DataType.BIGINT})
     userId!: number;

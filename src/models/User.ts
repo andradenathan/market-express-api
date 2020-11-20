@@ -1,4 +1,4 @@
-import { Column, DataType, Table, Model, HasMany, BelongsToMany, AllowNull, HasOne, Unique, BeforeCreate } from 'sequelize-typescript';
+import { Column, DataType, Table, Model, HasMany, BelongsToMany, AllowNull, HasOne, Unique, BeforeCreate, Default } from 'sequelize-typescript';
 import { Address } from './Address';
 import { Offer } from './Offer';
 import { Product } from './Product';
@@ -22,19 +22,41 @@ export class User extends Model {
     @Column({type: DataType.STRING})
     email!: string;
 
+    @AllowNull(true)
+    @Column({type: DataType.STRING})
+    photo!: string;
+
     @AllowNull(false)
     @Column({type: DataType.DATE})
     date_of_birth!: Date
 
+    @AllowNull(false)
+    @Default(false)
+    @Column({type: DataType.BOOLEAN})
+    is_admin!: boolean
+
     @BeforeCreate
     static async hashPassword(user: User){
-        if(user.password){
-            user.password = await bcrypt.hash(user.password, 10);
+        try {
+            if(user.password){
+                user.password = await bcrypt.hash(user.password, 10);
+            }
+        } catch(err) {
+            return err;
         }
+    }
+
+    @BeforeCreate
+    static async revokePrivileges(user: User) {
+        user.is_admin = false;
     }
  
     async comparePassword(attempt: string): Promise<boolean> {
-        return await bcrypt.compare(attempt, this.password);
+        try {
+            return await bcrypt.compare(attempt, this.password);
+        } catch (err) {
+            return err;
+        }
     }
 
     @HasMany(() => Product)

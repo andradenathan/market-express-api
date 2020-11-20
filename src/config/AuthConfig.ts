@@ -1,4 +1,7 @@
+import { config } from 'dotenv';
+config();
+
 export default {
-    secret: '6508918172',
-    expiresIn: '7d'
-}
+    secret: process.env.PASSPORT_SECRET as string,
+    expiresIn: process.env.PASSPORT_EXPIRES_IN,
+}   

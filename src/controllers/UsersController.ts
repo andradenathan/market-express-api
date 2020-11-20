@@ -2,33 +2,32 @@ import { User } from "../models/User";
 import { Request, Response } from 'express'; 
 import { Product } from "../models/Product";
 import { validationResult } from 'express-validator';
+import Upload from '../config/Upload';
+
 
 export default {
 
     async create(req: Request, res: Response) {
+        console.log(req.body)
         try {
-            const errors = validationResult(req)
-            if (!errors.isEmpty()) {
-                return res.status(422).json({"errors": errors});
-            }
+            validationResult(req).throw();
 
+            const requestImage = await req.file as Express.Multer.File;
+            req.body.photo = 'http://localhost:5000/uploads/' + requestImage.filename;
             const user = await User.create(req.body);
+            
             res.status(201).json({"user": user}).send();
-
+           
             } catch (err) {
                 res.status(400).json({"error": err}).send();
             }
-
     },
 
     async makeOffer(req: Request, res: Response) {
         try {
-            const errors = validationResult(req)
-            if (!errors.isEmpty()) {
-                return res.status(422).json({"errors": errors});
-            }
+            validationResult(req).throw();
 
-            const user = await User.findByPk(req.params["user_id"]);
+            const user = await User.findByPk(req.body.id);
             if (user === null) throw new Error;
             
             const product = await Product.findByPk(req.params["product_id"]);
@@ -49,7 +48,10 @@ export default {
 
     async get(req: Request, res: Response) {
         try {
-            const user = await User.findByPk(req.params["id"]);
+            const user = req.params["id"]? 
+            await User.findByPk(req.params["id"]):
+            await User.findByPk(req.body.id);
+
             if (user === null) throw new Error;
 
             const address = await user.$get('address')
@@ -62,7 +64,10 @@ export default {
 
     async getProducts(req: Request, res: Response) {
         try {
-            const user = await User.findByPk(req.params["id"]);
+            const user = req.params["id"]? 
+            await User.findByPk(req.params["id"]):
+            await User.findByPk(req.body.id);
+
             if (user === null) throw new Error;
 
             const products = await user.$get('products')
@@ -75,7 +80,10 @@ export default {
 
     async getOffers(req: Request, res: Response) {
         try {
-            const user = await User.findByPk(req.params["id"]);
+            const user = req.params["id"]? 
+            await User.findByPk(req.params["id"]):
+            await User.findByPk(req.body.id);
+
             if (user === null) throw new Error;
 
             const offers = await user.$get('offers')
@@ -99,12 +107,12 @@ export default {
 
     async update(req: Request, res: Response) {
         try {
-            const errors = validationResult(req)
-            if (!errors.isEmpty()) {
-                return res.status(422).json({"errors": errors});
-            }
+            validationResult(req).throw();
             
-            const user = await User.findByPk(req.body.id);
+            const user = req.params["id"]? 
+            await User.findByPk(req.params["id"]):
+            await User.findByPk(req.body.id);
+
             if (user === null) throw new Error;
 
             user.update(req.body);
@@ -117,8 +125,13 @@ export default {
 
     async delete(req: Request, res: Response) {
         try {
-            const user = await User.findByPk(req.params["id"]);
+            const user = req.params["id"]? 
+
+            await User.findByPk(req.params["id"]):
+            await User.findByPk(req.body.id);
+
             if (user === null) throw new Error;
+
             user.destroy();
             res.status(200).json({"user": "User has been successfully deleted"})
         } catch (err) {

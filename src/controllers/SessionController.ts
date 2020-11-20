@@ -1,6 +1,7 @@
 import { User } from '../models/User';
 import jwt  from 'jsonwebtoken';
 import { Request, Response } from 'express';
+import AuthConfig from '../config/AuthConfig';
 
 
 export default {
@@ -13,16 +14,26 @@ export default {
             return res.status(401).json({error: 'User not found'})
         }
 
-        if(!user.comparePassword(password)) {
-            return res.status(401).json({error: 'Wrong password'})
+        try {
+            const authorized = await user.comparePassword(password);
+            if(!(authorized === true)) {
+                return res.status(401).json({error: 'Wrong password'})
+            }
+        } catch (err) {
+            return res.status(500).json({'error': err.message()});
         }
 
+
         const id = user.id;
-        const name = user.name; 
+        const name = user.name;
 
         return res.status(201).json({
             success: "You are successfully connected, " + name,
+<<<<<<< HEAD
             token: jwt.sign({id}, '6508918172', {expiresIn: '7d'})
+=======
+            token: jwt.sign({id}, AuthConfig.secret, {expiresIn: AuthConfig.expiresIn})
+>>>>>>> nathan_develop
         })
     }
 }
