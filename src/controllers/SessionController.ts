@@ -29,11 +29,7 @@ export default {
 
         return res.status(201).json({
             success: "You are successfully connected, " + name,
-<<<<<<< HEAD
-            token: jwt.sign({id}, '6508918172', {expiresIn: '7d'})
-=======
             token: jwt.sign({id}, AuthConfig.secret, {expiresIn: AuthConfig.expiresIn})
->>>>>>> nathan_develop
         })
     }
 }
