@@ -2,27 +2,25 @@ import { User } from "../models/User";
 import { Request, Response } from 'express'; 
 import { Product } from "../models/Product";
 import { validationResult } from 'express-validator';
+import Upload from '../config/Upload';
+
 
 export default {
 
     async create(req: Request, res: Response) {
+        console.log(req.body)
         try {
             validationResult(req).throw();
 
+            const requestImage = await req.file as Express.Multer.File;
+            req.body.photo = 'http://localhost:5000/uploads/' + requestImage.filename;
             const user = await User.create(req.body);
             
-            const requestImages = req.files as Express.Multer.File[];
-            // requestImages.map(photo => {
-            //     return { photo: photo.filename }
-            // });
-            
-
             res.status(201).json({"user": user}).send();
-
+           
             } catch (err) {
                 res.status(400).json({"error": err}).send();
             }
-
     },
 
     async makeOffer(req: Request, res: Response) {
