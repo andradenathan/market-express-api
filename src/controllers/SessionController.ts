@@ -5,6 +5,14 @@ import AuthConfig from '../config/AuthConfig';
 
 
 export default {
+
+    /**
+     * A function that does authentication and returns a token to the user 
+     *  
+     * @param req 
+     * @param res 
+     */
+
     async login(req: Request, res: Response){
         const email = req.body.email;
         const password = req.body.password;

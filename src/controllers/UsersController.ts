@@ -2,18 +2,24 @@ import { User } from "../models/User";
 import { Request, Response } from 'express'; 
 import { Product } from "../models/Product";
 import { validationResult } from 'express-validator';
-import Upload from '../config/Upload';
-
 
 export default {
 
+    /**
+     * Creates an user and gives the option of uploading a photo 
+     * 
+     * @param req 
+     * @param res 
+     */
+
     async create(req: Request, res: Response) {
-        console.log(req.body)
+
         try {
             validationResult(req).throw();
 
             const requestImage = await req.file as Express.Multer.File;
             req.body.photo = 'http://localhost:5000/uploads/' + requestImage.filename;
+
             const user = await User.create(req.body);
             
             res.status(201).json({"user": user}).send();
@@ -22,6 +28,13 @@ export default {
                 res.status(400).json({"error": err}).send();
             }
     },
+
+    /**
+     * It does an offer in auction 
+     * 
+     * @param req 
+     * @param res 
+     */
 
     async makeOffer(req: Request, res: Response) {
         try {
@@ -46,6 +59,14 @@ export default {
 
     },
 
+
+    /**
+     * Get users by their respective ID
+     * 
+     * @param req 
+     * @param res 
+     */
+
     async get(req: Request, res: Response) {
         try {
             const user = req.params["id"]? 
@@ -62,6 +83,13 @@ export default {
 
     },
 
+    /**
+     * Get products of an respective user
+     * 
+     * @param req 
+     * @param res 
+     */
+
     async getProducts(req: Request, res: Response) {
         try {
             const user = req.params["id"]? 
@@ -77,6 +105,13 @@ export default {
             res.status(400).json({"error": "User not found"}).send();
         }
     },
+
+    /**
+     * Get offers from a respective user
+     * 
+     * @param req 
+     * @param res 
+     */
 
     async getOffers(req: Request, res: Response) {
         try {
@@ -95,6 +130,13 @@ export default {
 
     },
 
+    /**
+     * Show all users from the server
+     * 
+     * @param req 
+     * @param res 
+     */
+
     async list(req: Request, res: Response) {
         try {
             const users = await User.findAll();
@@ -104,6 +146,13 @@ export default {
             res.status(404).json({"users": "Users not found"}).send();
         }
     },
+
+    /**
+     * Updates user data
+     *  
+     * @param req 
+     * @param res 
+     */
 
     async update(req: Request, res: Response) {
         try {
@@ -122,6 +171,13 @@ export default {
             res.status(404).json({"error": "User not found"}).send();
         }
     },
+
+    /**
+     * Deletes an user account
+     * 
+     * @param req 
+     * @param res 
+     */
 
     async delete(req: Request, res: Response) {
         try {

@@ -7,12 +7,11 @@ export default {
         Mail.to = message.to;
         Mail.subject = message.subject;
         Mail.message = message.message;
-        let result = Mail.sendMail();
+        Mail.sendMail();
         try {
-            res.status(200).json({'success': "Email successfully sent"})
+            res.status(200).json({'success': "Email successfully sent"});
         } catch (err) {
-            res.status(404).json({'error': err})
-
+            res.status(404).json({'error': err});
         }
     }
 }
