@@ -41,6 +41,7 @@ possa reconhecer com mais facilidade o que contém nos módulos do Express.
 - **npm install --save sequelize-typescript** - Moderniza o Sequelize para o TypeScript
 - **npm install bcrypt** - Instala a biblioteca de criptografia para o sistema de autenticação
 - **npm install jsonwebtoken** - Modelo de Token que será enviado para um usuário conectado no servidor
+- **npm install faker** - Modulo de geração de dados falsos (para seedar o bd)
 - **npx -p typescript tsc --init** - Gera o arquivo "tsconfig.js", responsável por todas as configurações do TypeScript no projeto.
 - **npm run dev** - Inicia o servidor.
 
