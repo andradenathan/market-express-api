@@ -4,8 +4,7 @@ import { Offer } from './Offer';
 import { Product } from './Product';
 import bcrypt  from 'bcrypt';
 
-
-
+// Model de usuário
 @Table
 export class User extends Model {
 
@@ -33,9 +32,9 @@ export class User extends Model {
     @AllowNull(false)
     @Default(false)
     @Column({type: DataType.BOOLEAN})
-    is_admin!: boolean
+    is_admin!: boolean  // true se o usuário é admin, false caso contrário
 
-    @BeforeCreate
+    @BeforeCreate   // Encripta a senha do usuário antes de salavar no bd
     static async hashPassword(user: User){
         try {
             if(user.password){
@@ -46,11 +45,12 @@ export class User extends Model {
         }
     }
 
-    @BeforeCreate
+    @BeforeCreate   // Garante que usuário não é criado como admin
     static async revokePrivileges(user: User) {
         user.is_admin = false;
     }
  
+    // Verifica se a senha em attempt é válida
     async comparePassword(attempt: string): Promise<boolean> {
         try {
             return await bcrypt.compare(attempt, this.password);
@@ -60,11 +60,11 @@ export class User extends Model {
     }
 
     @HasMany(() => Product)
-    products!: Product[];
+    products!: Product[];   // Relação de posse de produtos
 
     @BelongsToMany(() => Product, () => Offer)
-    offers!: Product[];
+    offers!: Product[]; // Relação de ofertas
 
     @HasOne(() => Address)
-    address!: Address;
+    address!: Address;  // Relação de endereço
 }
