@@ -5,13 +5,21 @@ import AuthConfig from '../config/AuthConfig';
 
 
 export default {
+
+    /**
+     * A function that does authentication and returns a token to the user 
+     *  
+     * @param req 
+     * @param res 
+     */
+
     async login(req: Request, res: Response){
         const email = req.body.email;
         const password = req.body.password;
         
         const user = await User.findOne({where: {email: email}})
         if(!user) {
-            return res.status(401).json({error: 'Wrong email'})
+            return res.status(401).json({error: 'User not found'})
         }
 
         try {

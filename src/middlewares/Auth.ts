@@ -2,6 +2,13 @@ import { Response, Request, NextFunction } from 'express'
 import jwt from 'jsonwebtoken';
 import authConfig from '../config/AuthConfig';
 
+/**
+ * Authentication function that will verify if user is really logged in the system
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+
 export default function(req: Request, res: Response, next: NextFunction) {
     const authHeader = req.headers.authorization;
     if(!authHeader){

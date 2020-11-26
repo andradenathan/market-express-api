@@ -4,6 +4,14 @@ import { Request, Response } from 'express';
 
 
 export default {
+
+    /**
+     * Create an address to assign into the user
+     * 
+     * @param req 
+     * @param res 
+     */
+
     async create(req: Request, res: Response) {
         try {
             const user = await User.findByPk(req.body.id);
@@ -20,6 +28,12 @@ export default {
         }
     },
 
+    /**
+     * Updates address data
+     * 
+     * @param req 
+     * @param res 
+     */
     async update(req: Request, res: Response) {
         try {
             const user = await User.findByPk(req.body.id);
@@ -33,6 +47,12 @@ export default {
         }
     },
 
+    /**
+     * Delete an address 
+     * 
+     * @param req 
+     * @param res 
+     */
     async delete(req: Request, res: Response) {
         try {
             const user = await User.findByPk(req.body.id);

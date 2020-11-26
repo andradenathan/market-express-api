@@ -1,20 +1,23 @@
 import * as nodemailer from "nodemailer";
-import { config } from 'dotenv';
 
 class Mail {
     constructor(
+        public from?: string,
         public to?: string,
         public subject?: string,
         public message?: string) { }
 
+    /**
+     * Function that send an email to someone
+     * 
+     */
     sendMail(){
         let mailOptions = {
-            from: "nathan.nhdsk@gmail.com",
+            from: this.from,
             to: this.to,
             subject: this.subject,
             html: this.message
         };
-
 
         const transporter = nodemailer.createTransport({
             host: process.env.MAIL_HOST as string,
@@ -28,7 +31,7 @@ class Mail {
         });
 
 
-        transporter.sendMail(mailOptions, function(error, info){
+        transporter.sendMail(mailOptions, function(error){
             if(error) {
                 return error;
             } else {

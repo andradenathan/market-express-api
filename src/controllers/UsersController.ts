@@ -2,14 +2,19 @@ import { User } from "../models/User";
 import { Request, Response } from 'express'; 
 import { Product } from "../models/Product";
 import { validationResult } from 'express-validator';
-import Upload from '../config/Upload';
-
 
 export default {
 
     // Cria novo usuário com os atributos no body
+    /**
+     * Creates an user and gives the option of uploading a photo 
+     * 
+     * @param req 
+     * @param res 
+     */
+
     async create(req: Request, res: Response) {
-        console.log(req.body)
+
         try {
             validationResult(req).throw();  // Verifica se a validação foi bem sucedida e retorna um erro caso contrário
 
@@ -25,6 +30,13 @@ export default {
     },
 
     // Faz uma oferta do usuário logado em um produto
+    /**
+     * It does an offer in auction 
+     * 
+     * @param req 
+     * @param res 
+     */
+
     async makeOffer(req: Request, res: Response) {
         try {
             validationResult(req).throw();  // Verifica se a validação foi bem sucedida e retorna um erro caso contrário
@@ -49,6 +61,14 @@ export default {
     },
 
     // Retorna perfil do usuário logado, ou o de qualquer usuário caso o usuário logado seja um admin
+
+    /**
+     * Get users by their respective ID
+     * 
+     * @param req 
+     * @param res 
+     */
+
     async get(req: Request, res: Response) {
         try {
             const user = req.params["id"]?   // Encontra o usuário pelo id
@@ -66,6 +86,13 @@ export default {
     },
 
     // Retorna os produtos do usuário logado, ou os de qualquer usuário caso o usuário logado seja um admin
+    /**
+     * Get products of an respective user
+     * 
+     * @param req 
+     * @param res 
+     */
+
     async getProducts(req: Request, res: Response) {
         try {
             const user = req.params["id"]?   // Encontra o usuário pelo id
@@ -83,6 +110,13 @@ export default {
     },
 
     // Retorna as ofertas do usuário logado, ou as de qualquer usuário caso o usuário logado seja um admin
+    /**
+     * Get offers from a respective user
+     * 
+     * @param req 
+     * @param res 
+     */
+
     async getOffers(req: Request, res: Response) {
         try {
             const user = req.params["id"]?    // Encontra o usuário pelo id
@@ -101,6 +135,13 @@ export default {
     },
 
     // Lista todos os usuários do bd (acessível apenas para admin)
+    /**
+     * Show all users from the server
+     * 
+     * @param req 
+     * @param res 
+     */
+
     async list(req: Request, res: Response) {
         try {
             const users = await User.findAll();   // Lista os usuários do bd
@@ -113,6 +154,13 @@ export default {
     },
 
     // Atualiza o perfil do usuário logado, ou o de qualquer usuário caso o usuário logado seja um admin
+    /**
+     * Updates user data
+     *  
+     * @param req 
+     * @param res 
+     */
+
     async update(req: Request, res: Response) {
         try {
             validationResult(req).throw();  // Verifica se a validação foi bem sucedida e retorna um erro caso contrário
@@ -132,6 +180,13 @@ export default {
     },
 
     // Deleta o perfil do usuário logado, ou o de qualquer usuário caso o usuário logado seja um admin
+    /**
+     * Deletes an user account
+     * 
+     * @param req 
+     * @param res 
+     */
+
     async delete(req: Request, res: Response) {
         try {
             const user = req.params["id"]?     // Encontra o usuário pelo id
