@@ -2,20 +2,21 @@ import { Table, Model, Column, ForeignKey, DataType, AllowNull } from "sequelize
 import { Product } from "./Product";
 import { User } from "./User";
 
+// Model de oferta (Tabela pivô)
 @Table
 export class Offer extends Model {
 
-    @AllowNull(false)
+    @AllowNull(false)   // Usuário que fez a oferta
     @ForeignKey(() => User)
     @Column({type: DataType.BIGINT})
     userId!: number;
 
-    @AllowNull(false)
+    @AllowNull(false)   // Produto que recebeu a oferta
     @ForeignKey(() => Product)
     @Column({type: DataType.BIGINT})
     productId!: number;
 
-    @AllowNull(false)
+    @AllowNull(false)   // Valor da oferta
     @Column({type: DataType.FLOAT})
     value!: number;
 }
