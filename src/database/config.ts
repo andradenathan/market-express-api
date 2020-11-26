@@ -1,9 +1,11 @@
-import { Sequelize } from "sequelize-typescript";
+import { Sequelize } from "sequelize-typescript"; // Mapeador de relação de objetos
 import { config } from 'dotenv';
 import { resolve } from 'path';
 
+// Configura conexão com o bd
 config({path: resolve(__dirname, "../../.env")});
 
+// inicia o sequelize
 export const sequelize = new Sequelize({
     dialect: 'sqlite',
     storage: process.env.DATABASE_PATH,
