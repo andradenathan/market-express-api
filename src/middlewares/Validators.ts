@@ -6,8 +6,10 @@ import { User } from "../models/User";
 
 export default {
 
+    // Valida a criação ou atualização de um produto
     validateProduct(method: String) : any {
         switch (method) {
+            // Validação para criar produto
             case 'create': {
                 return [
                     body('name')
@@ -22,6 +24,7 @@ export default {
                         .custom(PositivePrice)
                 ];
             }
+            // Validação para atualizar usuário
             case 'update': {
                 return [
                     body('name')
@@ -39,8 +42,10 @@ export default {
         }
     },
 
+    // Valida a criação ou atualização de um usuário
     validateUser(method: String) : any {
         switch (method) {
+            // Validação para criar usuário
             case 'create': {
                 return [
                     body('email')
@@ -65,6 +70,7 @@ export default {
                         
                 ];
             }
+            // Validação para atualizar produto
             case 'update': {
                 return [
                     body('email')
@@ -91,6 +97,7 @@ export default {
         }
     },
 
+    // Valida a criação de oferta
     validadeOffer() {
         return [
             body('value')
@@ -103,6 +110,7 @@ export default {
     }
 }
 
+// Função helper que verifica se data está no passado
 const validateDOB = (date: Date) => {
     if (date.getTime() >= Date.now()) {
         return Promise.reject('Date of birth must be in the past');
@@ -110,6 +118,7 @@ const validateDOB = (date: Date) => {
     return Promise.resolve();
 }
 
+//  Função helper que verifica se o preço é positvo (>0)
 const PositivePrice = (price: number) => {
     if(price <= 0) {
         return Promise.reject('Value must be a valid price');
@@ -117,6 +126,7 @@ const PositivePrice = (price: number) => {
     return Promise.resolve();
 }
 
+//  Função helper que verifica se o email já existe no bd
 const emailInUse = async (email: string) => {
     try {
         const user = await User.findOne({where: {'email': email}});
@@ -128,6 +138,7 @@ const emailInUse = async (email: string) => {
     }
 }
 
+//  Função helper que verifica se o usuário existe
 const userExists = async (id: any) => {
     try {
         const user = await User.findByPk(id);
@@ -139,6 +150,7 @@ const userExists = async (id: any) => {
     }
 }
 
+//  Função helper que verifica se o produto existe
 const productExists = async (id: any) => {
     try {
         const product = await Product.findByPk(id);
