@@ -8,12 +8,12 @@ config({path: resolve(__dirname, "../../.env")});
 // inicia o sequelize
 export const sequelize = new Sequelize({
     /**
-     * Sequelize configurations
-     * dialect -> which type of database you want to use
-     * storage -> the path that you will place the database (you can put ::memory:: to assign into your memory)
-     * models -> where your models is located
-     * username -> database user
-     * password -> database pass
+     * Configurações do Sequelize:
+     * dialect -> O tipo de banco de dados que você deseja usar
+     * storage -> O caminho da onde o banco de dados armazenará os seus dados (::memory:: para armazenar na memória)
+     * models -> O caminho das Models
+     * username -> Usuário do banco de dados
+     * password -> Senha do banco de dados
      */
 
     dialect: 'sqlite',

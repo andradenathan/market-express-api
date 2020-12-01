@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(routes);
 
 
-// Upload configs
+// Configurações de upload
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 app.listen(process.env.PORT?.valueOf());

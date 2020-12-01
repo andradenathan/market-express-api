@@ -2,6 +2,14 @@ import Mail from '../services/Mail';
 import { Request, Response } from 'express';
 
 export default {
+
+    /**
+     * Função responsável para que o envio de e-mail seja realizado com sucesso
+     * 
+     * @param req 
+     * @param res 
+     */
+
     mail(req: Request, res: Response) {
         const message = Object.assign({}, req.body);
         Mail.to = message.to;

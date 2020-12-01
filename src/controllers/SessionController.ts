@@ -7,7 +7,7 @@ import AuthConfig from '../config/AuthConfig';
 export default {
 
     /**
-     * A function that does authentication and returns a token to the user 
+     * Função responsável para autenticar um usuário e gerar um token para o mesmo
      *  
      * @param req 
      * @param res 

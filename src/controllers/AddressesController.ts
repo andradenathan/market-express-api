@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 export default {
 
     /**
-     * Create an address to assign into the user
+     * Cria um endereço e associa a um usuário
      * 
      * @param req 
      * @param res 
@@ -29,11 +29,12 @@ export default {
     },
 
     /**
-     * Updates address data
+     * Atualiza os dados de um endereço
      * 
      * @param req 
      * @param res 
      */
+
     async update(req: Request, res: Response) {
         try {
             const user = await User.findByPk(req.body.id);
@@ -48,11 +49,12 @@ export default {
     },
 
     /**
-     * Delete an address 
+     * Deleta um endereço
      * 
      * @param req 
      * @param res 
      */
+    
     async delete(req: Request, res: Response) {
         try {
             const user = await User.findByPk(req.body.id);
@@ -65,6 +67,13 @@ export default {
             res.status(404).json({"error": "Address not found"}).send();
         }
     },
+
+    /**
+     * Define um usuário que um respectivo endereço pertence
+     * 
+     * @param req 
+     * @param res 
+     */
 
     async setUser(req: Request, res: Response) {
         try {

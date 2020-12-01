@@ -12,12 +12,10 @@ Uma das recomendações importantes que eu recebi foi que, por questões de segu
 
 Feito isso, durante a escolha de ORM, tivemos alguns problemas em relação ao TypeORM que não vamos entrar muito em detalhes mas acabamos optando pelo Sequelize e utilizamos 
 a versão mais recente, feito exclusivamente para o TypeScript. Dentro da pasta database, vocês poderão encontrar o arquivo de configuração do Sequelize. 
-De grosso modo, como estávamos muito animados para aprender novas coisas o mais rápido possível, acabamos fazendo apenas uma função para conectar com o banco de dados na memória
-e, então, sempre que iniciarmos o servidor, precisamos utilizar a rota /sync e iniciar todo o fluxo do projeto do zero.
 
-Toda vez que sincronizado com o servidor pela rota, o banco de dados também se inicia, então é importante checar o seu Bash para saber se não deu erro de conexão.
+O Banco de Dados funciona da seguinte maneira: temos a rota /startDb que é responsável por atuar como uma migration, ou seja, toda vez que essa rota é acessada ela fará o papel de limpar o conteúdo no banco de dados e reiniciá-lo.
 
-Isto é algo que estamos pesquisando para melhorar em breve.
+Para o nodemailer, optamos em utilizar um serviço de e-mail chamado mailtrap, que realiza envio de e-mails fakes somente para visualização e testes de HTML para as mensagens. Um ponto muito positivo do nodemailer na nossa opinião é que, o desenvolvedor tem o livre arbítrio de trabalhar da maneira que prefirir com o HTML para a mensagem que será enviada.
 
 No arquivo tsconfig.js, por questões de melhoria na perfomance do TypeScript, optamos por utilizar o ECMA Script 2017 (a configuração do campo "target").
 
@@ -43,6 +41,9 @@ possa reconhecer com mais facilidade o que contém nos módulos do Express.
 - **npm install jsonwebtoken** - Modelo de Token que será enviado para um usuário conectado no servidor
 - **npm install faker** - Modulo de geração de dados falsos (para seedar o bd)
 - **npx -p typescript tsc --init** - Gera o arquivo "tsconfig.js", responsável por todas as configurações do TypeScript no projeto.
+- **npm install nodemailer** - Biblioteca responsável pelos serviços de envio de e-mail.
+- **npm install multer** - Biblioteca responsável pelos serviços de armazenamento de arquivos (majoritariamente estruturado em nosso projeto para imagens)
+- **npm install cors** - Middleware responsável para permitir ou restringir resources requisitadas por um HTTP externo.
 - **npm run dev** - Inicia o servidor.
 
 
@@ -50,6 +51,9 @@ possa reconhecer com mais facilidade o que contém nos módulos do Express.
 - [Documentação - Express](https://expressjs.com)
 - [Documentação - Sequelize](https://sequelize.org/master/manual/getting-started.html)
 - [Documentação - Sequelize CLI TypeScript](https://www.npmjs.com/package/sequelize-cli-typescript)
+- [Documentação - Nodemailer](https://nodemailer.com/about/)
+- [Documentação - CORS](https://expressjs.com/en/resources/middleware/cors.html)
+- [Fazendo upload com a biblioteca multer](https://medium.com/@thihenos/node-usando-multer-para-fazer-upload-de-arquivos-em-5-passos-9ca33a7cf2ec)
 
 # Autores
 Projeto desenvolvido por [Nathan Andrade](https://github.com/andradenathan) e [Gabriel Cunha](https://github.com/GabrielCunha105).

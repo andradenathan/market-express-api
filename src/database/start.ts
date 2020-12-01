@@ -5,7 +5,7 @@ import { Request, Response } from 'express';
 export default async (req: Request, res: Response) => {
     
     /**
-     * Database starts function and also it's meaningful for restarting database
+     * Função responsável por iniciar o servidor ou reiniciá-lo (atuando como uma migration)
      */
 
     if (process.env.NODE_ENV !== "development") {
@@ -13,7 +13,7 @@ export default async (req: Request, res: Response) => {
     }
     try {
         await sequelize.sync({ force: true });  // Migra o db
-        await sequelize.authenticate(); // testa a conexão com o bd
+        await sequelize.authenticate(); // Testa a conexão com o bd
         res.status(200).json('Connection has been established successfully').send;
     } catch (error) {
         res.status(400).json({'error': 'Unable to connect to the database'}).send;

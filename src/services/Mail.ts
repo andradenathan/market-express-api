@@ -8,7 +8,7 @@ class Mail {
         public message?: string) { }
 
     /**
-     * Function that send an email to someone
+     * Função para enviar e-mail para um usuário
      * 
      */
     sendMail(){

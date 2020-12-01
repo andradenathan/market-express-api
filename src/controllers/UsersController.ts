@@ -5,9 +5,8 @@ import { validationResult } from 'express-validator';
 
 export default {
 
-    // Cria novo usuário com os atributos no body
     /**
-     * Creates an user and gives the option of uploading a photo 
+     * Cria um usuário no banco de dados 
      * 
      * @param req 
      * @param res 
@@ -18,7 +17,7 @@ export default {
         try {
             validationResult(req).throw();  // Verifica se a validação foi bem sucedida e retorna um erro caso contrário
 
-            const requestImage = await req.file as Express.Multer.File;
+            const requestImage = await req.file as Express.Multer.File; // Requisição da imagem da biblioteca Multer
             req.body.photo = 'http://localhost:5000/uploads/' + requestImage.filename;
             const user = await User.create(req.body);   // Cria usuário novo
             
@@ -29,9 +28,9 @@ export default {
             }
     },
 
-    // Faz uma oferta do usuário logado em um produto
+
     /**
-     * It does an offer in auction 
+     * Faz oferta do usuário logado em um produto 
      * 
      * @param req 
      * @param res 
@@ -60,10 +59,8 @@ export default {
 
     },
 
-    // Retorna perfil do usuário logado, ou o de qualquer usuário caso o usuário logado seja um admin
-
     /**
-     * Get users by their respective ID
+     * Retorna perfil do usuário logado, ou o de qualquer usuário caso o usuário logado seja um administrador
      * 
      * @param req 
      * @param res 
@@ -84,10 +81,9 @@ export default {
         }
 
     },
-
-    // Retorna os produtos do usuário logado, ou os de qualquer usuário caso o usuário logado seja um admin
+ 
     /**
-     * Get products of an respective user
+     * Retorna os produtos do usuário logado, ou os de qualquer usuário caso o usuário logado seja um admin
      * 
      * @param req 
      * @param res 
@@ -109,9 +105,8 @@ export default {
         }
     },
 
-    // Retorna as ofertas do usuário logado, ou as de qualquer usuário caso o usuário logado seja um admin
     /**
-     * Get offers from a respective user
+     * Retorna as ofertas do usuário logado, ou as de qualquer usuário caso o usuário logado seja um administrador
      * 
      * @param req 
      * @param res 
@@ -134,9 +129,8 @@ export default {
 
     },
 
-    // Lista todos os usuários do bd (acessível apenas para admin)
     /**
-     * Show all users from the server
+     * Lista todos os usuários do banco de dados (acessível apenas para o administrador)
      * 
      * @param req 
      * @param res 
@@ -153,9 +147,8 @@ export default {
         }
     },
 
-    // Atualiza o perfil do usuário logado, ou o de qualquer usuário caso o usuário logado seja um admin
     /**
-     * Updates user data
+     * Atualiza o perfil do usuário logado, ou o de qualquer usuário caso o usuário logado seja um admin
      *  
      * @param req 
      * @param res 
@@ -179,9 +172,9 @@ export default {
         }
     },
 
-    // Deleta o perfil do usuário logado, ou o de qualquer usuário caso o usuário logado seja um admin
+    //
     /**
-     * Deletes an user account
+     * Deleta o perfil do usuário logado, ou o de qualquer usuário caso o usuário logado seja um administrador
      * 
      * @param req 
      * @param res 
